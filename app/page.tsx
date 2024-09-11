@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react'
 import Navigation from '@/components/Navigation'
-import HeroSection from '@/components/HeroSection'
-import AboutSection from '@/components/AboutSection'
-import MembershipSection from '@/components/MembershipSection'
+import HeroSection from '@/components/HeroSection/HeroSection'
+import MembershipSection from '@/components/MembershipSection/MembershipSection'
+import HistoryAndGoalsSection from '@/components/HistoryAndGoalsSection/HistoryAndGoalsSection'
 import EventsSection from '@/components/EventsSection'
 import NewsSection from '@/components/NewsSection'
 import ContactSection from '@/components/ContactSection'
+import FAQSection from '@/components/FAQSection'
 import Footer from '@/components/Footer'
 
 export default function Home() {
@@ -15,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'membership', 'events', 'news', 'contact']
+      const sections = ['home', 'membership', 'history-and-goals', 'events', 'news', 'contact', 'faq']
       const currentSection = sections.find(section => {
         const element = document.getElementById(section)
         if (element) {
@@ -44,12 +45,13 @@ export default function Home() {
       <Navigation activeSection={activeSection} scrollToSection={scrollToSection} />
 
       <main className="flex-grow">
-        <HeroSection scrollToSection={scrollToSection} />
-        <AboutSection />
+        <HeroSection  />
         <MembershipSection />
+        <HistoryAndGoalsSection />
         <EventsSection />
         <NewsSection />
         <ContactSection />
+        <FAQSection />
       </main>
 
       <Footer scrollToSection={scrollToSection} />
