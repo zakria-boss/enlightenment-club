@@ -3,17 +3,14 @@ import dynamic from 'next/dynamic';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-// Dynamically import react-slick with no SSR
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
 
-// Define types for the arrow props
 interface ArrowProps {
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
 }
 
-// Custom arrow components with added color styling
 function NextArrow({ className, style, onClick }: ArrowProps) {
   return (
     <div
@@ -21,15 +18,17 @@ function NextArrow({ className, style, onClick }: ArrowProps) {
       style={{
         ...style,
         display: 'block',
-        right: '10px',
+        right: '-50px',
         zIndex: 1,
-        background: '#EEAE13', // Custom color for the arrow
-        borderRadius: '50%',
-        width: '40px',
-        height: '40px'
       }}
       onClick={onClick}
-    />
+    >
+      <div className="bg-[#EEAE13] text-white p-4 rounded-full shadow-lg transition-all hover:bg-[#d99d11] hover:shadow-xl hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </div>
+    </div>
   );
 }
 
@@ -40,15 +39,17 @@ function PrevArrow({ className, style, onClick }: ArrowProps) {
       style={{
         ...style,
         display: 'block',
-        left: '10px',
+        left: '-50px',
         zIndex: 1,
-        background: '#EEAE13', // Custom color for the arrow
-        borderRadius: '50%',
-        width: '40px',
-        height: '40px'
       }}
       onClick={onClick}
-    />
+    >
+      <div className="bg-[#EEAE13] text-white p-4 rounded-full shadow-lg transition-all hover:bg-[#d99d11] hover:shadow-xl hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </div>
+    </div>
   );
 }
 
@@ -102,28 +103,27 @@ export default function Cabinet() {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3, // Show 3 slides at a time
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2500,
-    pauseOnHover: true, // Pause when the mouse hovers over the carousel
-    pauseOnFocus: false, // Ensure that the autoplay continues when the carousel is focused
-    nextArrow: <NextArrow />, // Custom next arrow
-    prevArrow: <PrevArrow />, // Custom previous arrow
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 1024, // For tablet and medium screens
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 2, // Show 2 slides on medium screens
+          slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
           dots: true
         }
       },
       {
-        breakpoint: 600, // For mobile and small screens
+        breakpoint: 600,
         settings: {
-          slidesToShow: 1, // Show 1 slide on small screens
+          slidesToShow: 1,
           slidesToScroll: 1
         }
       }
@@ -131,20 +131,26 @@ export default function Cabinet() {
   };
 
   return (
-    <div className="mb-12">
-      <h3 className="text-2xl font-semibold mb-4 text-[#30323B]">Our Cabinet</h3>
-      <Slider {...settings}>
-        {cabinetMembers.map((member, index) => (
-          <div key={index} className="p-6">
-            <div className="bg-gray-100 rounded-lg p-6">
-              <img src={member.image} alt={member.name} className="w-32 h-32 rounded-full mx-auto mb-4" />
-              <h4 className="text-xl font-semibold mb-2 text-center">{member.name}</h4>
-              <p className="text-[#EEAE13] mb-2 text-center">{member.role}</p>
-              <p className="text-gray-600 text-center">{member.bio}</p>
+    <div className="mb-12 px-16">
+      <h3 className="text-3xl font-semibold mb-12 text-center text-[#30323B]">Our Cabinet</h3>
+      <div className="relative">
+        <Slider {...settings}>
+          {cabinetMembers.map((member, index) => (
+            <div key={index} className="px-4">
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden h-[450px] flex flex-col transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <div className="h-48 overflow-hidden">
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
+                </div>
+                <div className="p-6 flex flex-col flex-grow">
+                  <h4 className="text-xl font-semibold mb-2 text-[#30323B]">{member.name}</h4>
+                  <p className="text-primary mb-4 font-medium">{member.role}</p>
+                  <p className="text-gray-600 text-sm flex-grow overflow-y-auto">{member.bio}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
-      </Slider>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 }
