@@ -10,6 +10,7 @@ import NewsSection from '@/components/NewsSection'
 import ContactSection from '@/components/ContactSection'
 import FAQSection from '@/components/FAQSection'
 import Footer from '@/components/Footer'
+import BlogSection from '@/components/BlogSection'
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('home')
@@ -50,6 +51,7 @@ export default function Home() {
         <HistoryAndGoalsSection />
         <EventsSection />
         <NewsSection />
+        <BlogSection/>
         <ContactSection />
         <FAQSection />
       </main>

@@ -6,8 +6,12 @@ import { authOptions } from "../auth/[...nextauth]/route"
 const prisma = new PrismaClient()
 
 export async function GET() {
-  const events = await prisma.event.findMany()
-  return NextResponse.json(events)
+  try {
+    const events = await prisma.event.findMany()
+    return NextResponse.json(events)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch events" }, { status: 500 })
+  }
 }
 
 export async function POST(request: Request) {
@@ -16,18 +20,26 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  const newEvent = await prisma.event.create({
-    data: {
-      title: data.title,
-      description: data.description,
-      date: new Date(data.date),
-      time: data.time,
-      location: data.location,
-      image: data.image,
-    },
-  })
-  return NextResponse.json(newEvent)
+  try {
+    const data = await request.json()
+    if (!data.title || !data.description || !data.date || !data.time || !data.location) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const newEvent = await prisma.event.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        date: new Date(data.date),
+        time: data.time,
+        location: data.location,
+        image: data.image,
+      },
+    })
+    return NextResponse.json(newEvent)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to create event" }, { status: 500 })
+  }
 }
 
 export async function PUT(request: Request) {
@@ -36,19 +48,27 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  const updatedEvent = await prisma.event.update({
-    where: { id: data.id },
-    data: {
-      title: data.title,
-      description: data.description,
-      date: new Date(data.date),
-      time: data.time,
-      location: data.location,
-      image: data.image,
-    },
-  })
-  return NextResponse.json(updatedEvent)
+  try {
+    const data = await request.json()
+    if (!data.id || !data.title || !data.description || !data.date || !data.time || !data.location) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const updatedEvent = await prisma.event.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        description: data.description,
+        date: new Date(data.date),
+        time: data.time,
+        location: data.location,
+        image: data.image,
+      },
+    })
+    return NextResponse.json(updatedEvent)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update event" }, { status: 500 })
+  }
 }
 
 export async function DELETE(request: Request) {
@@ -57,9 +77,21 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  await prisma.event.delete({
-    where: { id: data.id },
-  })
-  return NextResponse.json({ message: "Event deleted successfully" })
+  try {
+    const data = await request.json()
+    const event = await prisma.event.findUnique({
+      where: { id: data.id },
+    })
+
+    if (!event) {
+      return NextResponse.json({ error: "Event not found" }, { status: 404 })
+    }
+
+    await prisma.event.delete({
+      where: { id: data.id },
+    })
+    return NextResponse.json({ message: "Event deleted successfully" })
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete event" }, { status: 500 })
+  }
 }

@@ -6,8 +6,12 @@ import { authOptions } from "../auth/[...nextauth]/route"
 const prisma = new PrismaClient()
 
 export async function GET() {
-  const blogs = await prisma.blog.findMany()
-  return NextResponse.json(blogs)
+  try {
+    const blogs = await prisma.blog.findMany()
+    return NextResponse.json(blogs)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch blogs" }, { status: 500 })
+  }
 }
 
 export async function POST(request: Request) {
@@ -16,18 +20,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  const newBlog = await prisma.blog.create({
-    data: {
-      title: data.title,
-      content: data.content,
-      author: data.author,
-      image: data.image,
-      slug: data.slug,
-      publishedAt: new Date(),
-    },
-  })
-  return NextResponse.json(newBlog)
+  try {
+    const data = await request.json()
+    if (!data.title || !data.content || !data.author) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const newBlog = await prisma.blog.create({
+      data: {
+        title: data.title,
+        content: data.content,
+        author: data.author,
+        image: data.image,
+        slug: data.slug,
+        publishedAt: new Date(),
+      },
+    })
+
+    return NextResponse.json(newBlog)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to create blog" }, { status: 500 })
+  }
 }
 
 export async function PUT(request: Request) {
@@ -36,18 +49,27 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  const updatedBlog = await prisma.blog.update({
-    where: { id: data.id },
-    data: {
-      title: data.title,
-      content: data.content,
-      author: data.author,
-      image: data.image,
-      slug: data.slug,
-    },
-  })
-  return NextResponse.json(updatedBlog)
+  try {
+    const data = await request.json()
+    if (!data.id || !data.title || !data.content) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const updatedBlog = await prisma.blog.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        content: data.content,
+        author: data.author,
+        image: data.image,
+        slug: data.slug,
+      },
+    })
+
+    return NextResponse.json(updatedBlog)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update blog" }, { status: 500 })
+  }
 }
 
 export async function DELETE(request: Request) {
@@ -56,9 +78,17 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  await prisma.blog.delete({
-    where: { id: data.id },
-  })
-  return NextResponse.json({ message: "Blog deleted successfully" })
+  try {
+    const data = await request.json()
+    const blog = await prisma.blog.findUnique({ where: { id: data.id } })
+
+    if (!blog) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 })
+    }
+
+    await prisma.blog.delete({ where: { id: data.id } })
+    return NextResponse.json({ message: "Blog deleted successfully" })
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete blog" }, { status: 500 })
+  }
 }

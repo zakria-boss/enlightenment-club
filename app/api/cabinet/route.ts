@@ -6,8 +6,12 @@ import { authOptions } from "../auth/[...nextauth]/route"
 const prisma = new PrismaClient()
 
 export async function GET() {
-  const cabinetMembers = await prisma.cabinetMember.findMany()
-  return NextResponse.json(cabinetMembers)
+  try {
+    const cabinetMembers = await prisma.cabinetMember.findMany()
+    return NextResponse.json(cabinetMembers)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch cabinet members" }, { status: 500 })
+  }
 }
 
 export async function POST(request: Request) {
@@ -16,16 +20,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  const newMember = await prisma.cabinetMember.create({
-    data: {
-      name: data.name,
-      role: data.role,
-      bio: data.bio,
-      image: data.image,
-    },
-  })
-  return NextResponse.json(newMember)
+  try {
+    const data = await request.json()
+    if (!data.name || !data.role || !data.bio) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const newMember = await prisma.cabinetMember.create({
+      data: {
+        name: data.name,
+        role: data.role,
+        bio: data.bio,
+        image: data.image,
+      },
+    })
+    return NextResponse.json(newMember)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to create cabinet member" }, { status: 500 })
+  }
 }
 
 export async function PUT(request: Request) {
@@ -34,17 +46,25 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  const updatedMember = await prisma.cabinetMember.update({
-    where: { id: data.id },
-    data: {
-      name: data.name,
-      role: data.role,
-      bio: data.bio,
-      image: data.image,
-    },
-  })
-  return NextResponse.json(updatedMember)
+  try {
+    const data = await request.json()
+    if (!data.id || !data.name || !data.role || !data.bio) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const updatedMember = await prisma.cabinetMember.update({
+      where: { id: data.id },
+      data: {
+        name: data.name,
+        role: data.role,
+        bio: data.bio,
+        image: data.image,
+      },
+    })
+    return NextResponse.json(updatedMember)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update cabinet member" }, { status: 500 })
+  }
 }
 
 export async function DELETE(request: Request) {
@@ -53,9 +73,21 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const data = await request.json()
-  await prisma.cabinetMember.delete({
-    where: { id: data.id },
-  })
-  return NextResponse.json({ message: "Member deleted successfully" })
+  try {
+    const data = await request.json()
+    const member = await prisma.cabinetMember.findUnique({
+      where: { id: data.id },
+    })
+
+    if (!member) {
+      return NextResponse.json({ error: "Member not found" }, { status: 404 })
+    }
+
+    await prisma.cabinetMember.delete({
+      where: { id: data.id },
+    })
+    return NextResponse.json({ message: "Member deleted successfully" })
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete cabinet member" }, { status: 500 })
+  }
 }

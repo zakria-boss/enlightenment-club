@@ -1,10 +1,10 @@
 import React from 'react'
 
 interface FooterProps {
-  scrollToSection: (sectionId: string) => void
+  scrollToSection?: (sectionId: string) => void
 }
 
-export default function Footer({ scrollToSection }: FooterProps) {
+export default function Footer({ scrollToSection = () => {} }: FooterProps) {
   return (
     <footer className="bg-[#30323B] text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

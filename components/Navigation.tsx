@@ -4,11 +4,11 @@ import React, { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 interface NavigationProps {
-  activeSection: string;
-  scrollToSection: (sectionId: string) => void;
+  activeSection?: string;
+  scrollToSection?: (sectionId: string) => void;
 }
 
-export default function Navigation({ activeSection, scrollToSection }: NavigationProps) {
+export default function Navigation({ activeSection="", scrollToSection = () => {} }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navItems = [
