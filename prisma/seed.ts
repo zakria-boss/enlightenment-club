@@ -10,6 +10,20 @@ async function main() {
   await prisma.event.deleteMany()
   await prisma.cabinetMember.deleteMany()
   await prisma.user.deleteMany()
+  await prisma.permission.deleteMany()
+
+  // Seed Permissions
+  const permission1 = await prisma.permission.create({
+    data: {
+      name: 'READ_PRIVILEGES',
+    },
+  })
+
+  const permission2 = await prisma.permission.create({
+    data: {
+      name: 'WRITE_PRIVILEGES',
+    },
+  })
 
   // Seed Users
   const user1 = await prisma.user.create({
@@ -18,6 +32,9 @@ async function main() {
       name: 'John Doe',
       password: await bcrypt.hash('password123', 10),
       role: 'ADMIN',
+      permissions: {
+        connect: [{ id: permission1.id }, { id: permission2.id }],
+      },
     },
   })
 
@@ -27,6 +44,9 @@ async function main() {
       name: 'Jane Doe',
       password: await bcrypt.hash('password123', 10),
       role: 'SUPER_ADMIN',
+      permissions: {
+        connect: [{ id: permission1.id }],
+      },
     },
   })
 
