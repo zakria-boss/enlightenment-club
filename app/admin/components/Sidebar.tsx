@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Users, Calendar, FileText, HelpCircle, LogOut, Menu } from 'lucide-react'
-import { signOut } from 'next-auth/react'
+import { Home, Users, Calendar, FileText, HelpCircle, LogOut, Menu, Shield } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 
 const menuItems = [
   { name: 'Dashboard', href: '/admin', icon: Home },
@@ -17,6 +17,7 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const { data: session } = useSession()
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen)
@@ -30,6 +31,7 @@ export default function Sidebar() {
           isSidebarOpen ? 'left-60' : 'left-4'
         } z-50 rounded-md transition-all duration-300 ease-in-out`}
         onClick={toggleSidebar}
+        aria-label="Toggle sidebar"
       >
         <Menu className="h-6 w-6" />
       </button>
@@ -60,6 +62,21 @@ export default function Sidebar() {
               </div>
             </Link>
           ))}
+          {session?.user?.role === 'SUPER_ADMIN' && (
+            <Link
+              href="/admin/super"
+              className={`block py-2.5 px-4 rounded-lg transition duration-200 ${
+                pathname === '/admin/super'
+                  ? 'bg-[#EEAE13] text-white'
+                  : 'hover:bg-[#EEAE13] hover:text-white'
+              }`}
+            >
+              <div className="flex items-center space-x-2">
+                <Shield className="h-5 w-5" />
+                <span>Super Admin</span>
+              </div>
+            </Link>
+          )}
           <button
             onClick={() => signOut({ callbackUrl: '/' })}
             className="block py-2.5 px-4 rounded-lg transition duration-200 hover:bg-[#EEAE13] hover:text-white w-full text-left"

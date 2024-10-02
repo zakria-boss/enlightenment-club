@@ -12,6 +12,12 @@ model User {
   email    String @unique
   password String
   name     String
+  role     Role   @default(ADMIN)
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
 }
 
 model CabinetMember {
