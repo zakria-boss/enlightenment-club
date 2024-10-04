@@ -1,16 +1,17 @@
-import { getServerSession } from "next-auth/next";
-import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import Sidebar from "./components/Sidebar";
+import Sidebar from './components/Sidebar'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '../api/auth/[...nextauth]/route'
+import { redirect } from 'next/navigation'
 
-export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(authOptions);
-  console.log("🚀 ~ AdminLayout ~ session:", session)
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const session = await getServerSession(authOptions)
 
-  if (session === null || session === undefined) {
-    // Prevent infinite redirects by checking if the session is null/undefined
-    redirect("/login");
-    return null;  // Prevent further rendering
+  if (!session || !['ADMIN', 'SUPER_ADMIN'].includes(session.user.role)) {
+    redirect('/login')
   }
 
   return (
@@ -22,5 +23,5 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </div>
       </main>
     </div>
-  );
+  )
 }

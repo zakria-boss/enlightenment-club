@@ -4,24 +4,49 @@ const bcrypt = require('bcryptjs')
 const prisma = new PrismaClient()
 
 async function main() {
-  // Seed Users
-  const user1 = await prisma.user.upsert({
-    where: { email: 'john@example.com' },
-    update: {},
-    create: {
-      email: 'john@example.com',
-      name: 'John Doe',
-      password: await bcrypt.hash('password123', 10),
+  // Clear existing data
+  await prisma.fAQ.deleteMany()
+  await prisma.blog.deleteMany()
+  await prisma.event.deleteMany()
+  await prisma.cabinetMember.deleteMany()
+  await prisma.user.deleteMany()
+  await prisma.permission.deleteMany()
+
+  // Seed Permissions
+  const permission1 = await prisma.permission.create({
+    data: {
+      name: 'READ_PRIVILEGES',
     },
   })
 
-  const user2 = await prisma.user.upsert({
-    where: { email: 'jane@example.com' },
-    update: {},
-    create: {
+  const permission2 = await prisma.permission.create({
+    data: {
+      name: 'WRITE_PRIVILEGES',
+    },
+  })
+
+  // Seed Users
+  const user1 = await prisma.user.create({
+    data: {
+      email: 'john@example.com',
+      name: 'John Doe',
+      password: await bcrypt.hash('password123', 10),
+      role: 'ADMIN',
+      permissions: {
+        connect: [{ id: permission1.id }, { id: permission2.id }],
+      },
+    },
+  })
+
+  const user2 = await prisma.user.create({
+    data: {
       email: 'jane@example.com',
       name: 'Jane Doe',
       password: await bcrypt.hash('password123', 10),
+      role: 'SUPER_ADMIN',
+      permissions: {
+        connect: [{ id: permission1.id }],
+      },
     },
   })
 
@@ -49,7 +74,7 @@ async function main() {
     data: {
       title: 'Annual Finance Summit',
       description: 'A summit to discuss the latest trends in finance.',
-      date: new Date('2024-09-25'),
+      date: new Date('2024-09-25T10:00:00.000Z'),
       time: '10:00 AM',
       location: 'New York City',
       image: 'https://example.com/finance-summit.jpg',
@@ -60,7 +85,7 @@ async function main() {
     data: {
       title: 'Education Conference 2024',
       description: 'A conference focused on education reform.',
-      date: new Date('2024-11-10'),
+      date: new Date('2024-11-10T09:00:00.000Z'),
       time: '9:00 AM',
       location: 'Los Angeles',
       image: 'https://example.com/education-conference.jpg',

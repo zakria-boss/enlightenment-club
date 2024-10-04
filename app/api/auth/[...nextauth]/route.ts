@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
 import bcrypt from "bcryptjs"
@@ -24,7 +25,7 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email }
         })
 
-        if (!user) {
+        if (!user || !user.password) {
           return null
         }
 
@@ -38,28 +39,51 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
+          role: user.role,
         }
       }
-    })
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
   ],
   session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    strategy: "jwt" as const
   },
   pages: {
     signIn: "/login",
-    error: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id
+        token.role = user.role
+      }
+      if (account?.provider === "google") {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email! },
+        })
+        if (dbUser) {
+          token.role = dbUser.role
+        } else {
+          const newUser = await prisma.user.create({
+            data: {
+              name: token.name!,
+              email: token.email!,
+              role: "USER" as const,
+            },
+          })
+          token.id = newUser.id
+          token.role = newUser.role
+        }
       }
       return token
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
+        session.user.role = token.role as string
       }
       return session
     }
