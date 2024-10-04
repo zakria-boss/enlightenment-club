@@ -1,11 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { Calendar, FileText, HelpCircle, Home, LogOut, Menu, UserCircle, Users } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Users, Calendar, FileText, HelpCircle, LogOut, Menu, Shield } from 'lucide-react'
-import { signOut, useSession } from 'next-auth/react'
-import RoleBasedAccess from '@/components/RoleBasedAccess'
+import { useState } from 'react'
 
 const menuItems = [
   { name: 'Dashboard', href: '/admin', icon: Home },
@@ -60,19 +59,17 @@ export default function Sidebar() {
               <span>{item.name}</span>
             </Link>
           ))}
-          <RoleBasedAccess allowedRoles={['SUPER_ADMIN']}>
-            <Link
-              href="/admin/super"
-              className={`flex items-center space-x-2 py-2 px-4 rounded transition duration-200 ${
-                pathname === '/admin/super'
-                  ? 'bg-primary text-white'
-                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-              }`}
-            >
-              <Shield className="h-5 w-5" />
-              <span>Super Admin</span>
-            </Link>
-          </RoleBasedAccess>
+          <Link
+            href="/admin/profile"
+            className={`flex items-center space-x-2 py-2 px-4 rounded transition duration-200 ${
+              pathname === '/admin/profile'
+                ? 'bg-primary text-white'
+                : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+            }`}
+          >
+            <UserCircle className="h-5 w-5" />
+            <span>Profile</span>
+          </Link>
           <button
             onClick={() => signOut({ callbackUrl: '/' })}
             className="flex items-center space-x-2 py-2 px-4 rounded transition duration-200 text-gray-400 hover:bg-gray-800 hover:text-white w-full text-left"

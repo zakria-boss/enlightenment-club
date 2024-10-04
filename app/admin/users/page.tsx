@@ -21,11 +21,11 @@ interface User {
 }
 
 type NewUserType = {
-  name: string;
-  email: string;
-  password: string;
-  role: Role;
-};
+  name: string
+  email: string
+  password: string
+  role: Role
+}
 
 export default function UserManagement() {
   const { data: session } = useSession()
@@ -36,7 +36,7 @@ export default function UserManagement() {
     email: '',
     password: '',
     role: Role.USER,
-  });
+  })
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState('ALL')
   const [sort, setSort] = useState('name')
@@ -44,6 +44,8 @@ export default function UserManagement() {
   const [loading, setLoading] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [userToDelete, setUserToDelete] = useState<string | null>(null)
+
+  const isSuperAdminExists = users.some(user => user.role === Role.SUPER_ADMIN)
 
   useEffect(() => {
     fetchUsers()
@@ -68,58 +70,88 @@ export default function UserManagement() {
     setNewUser({ ...newUser, [name]: value })
   }
 
-  const handleAddUser = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setLoading(true);
-      try {
-          const response = await fetch('/api/users', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                  name: newUser.name,
-                  email: newUser.email,
-                  password: newUser.password,
-                  role: Role[newUser.role as keyof typeof Role],
-              }),
-          });
-          if (!response.ok) throw new Error('Failed to add user');
-          setNewUser({ name: '', email: '', password: '', role: Role.USER });
-          fetchUsers();
-          addToast('User added successfully', 'success');
-      } catch (error) {
-          console.error('Error adding user:', error);
-          addToast('Failed to add user', 'error');
-      }
-      setLoading(false);
-  };
+  const validateForm = () => {
+    if (!newUser.name.trim()) {
+      addToast('Name is required', 'error')
+      return false
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newUser.email)) {
+      addToast('Invalid email format', 'error')
+      return false
+    }
+    if (newUser.password.length < 6) {
+      addToast('Password must be at least 6 characters long', 'error')
+      return false
+    }
+    if (newUser.role === Role.SUPER_ADMIN && isSuperAdminExists) {
+      addToast('A Super Admin already exists', 'error')
+      return false
+    }
+    return true
+  }
 
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!validateForm()) return
+    setLoading(true)
+    try {
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newUser),
+      })
+      if (!response.ok) throw new Error('Failed to add user')
+      setNewUser({ name: '', email: '', password: '', role: Role.USER })
+      fetchUsers()
+      addToast('User added successfully', 'success')
+    } catch (error) {
+      if (error instanceof Error) {
+        addToast(error.message || 'Failed to update user', 'error')
+      } else {
+        addToast('An unexpected error occurred', 'error')
+      }
+    }
+    setLoading(false)
+  }
 
   const handleUpdateUser = async (user: User) => {
-      setLoading(true);
-      try {
-          const response = await fetch('/api/users', {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                  id: user.id,
-                  name: user.name,
-                  email: user.email,
-                  role: Role[user.role as keyof typeof Role],
-              }),
-          });
-          if (!response.ok) throw new Error('Failed to update user');
-          fetchUsers();
-          addToast('User updated successfully', 'success');
-      } catch (error) {
-          console.error('Error updating user:', error);
-          addToast('Failed to update user', 'error');
-      }
-      setLoading(false);
-  };
+    if (user.role === Role.SUPER_ADMIN && session?.user?.id !== user.id) {
+      addToast('Cannot modify another Super Admin', 'error')
+      return
+    }
 
+    if (!validateForm()) return
 
+    setLoading(true)
+    try {
+      const response = await fetch('/api/users', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        }),
+      })
+      if (!response.ok) throw new Error('Failed to update user')
+      fetchUsers()
+      addToast('User updated successfully', 'success')
+    } catch (error) {
+      console.error('Error updating user:', error)
+      addToast('Failed to update user', 'error')
+    }
+    setLoading(false)
+  }
 
   const handleDeleteUser = async () => {
+    if (!userToDelete) return
+    const userToBeDeleted = users.find(user => user.id === userToDelete)
+    if (userToBeDeleted?.role === Role.SUPER_ADMIN) {
+      addToast('Cannot delete the Super Admin', 'error')
+      return
+    }
+
     setLoading(true)
     try {
       const response = await fetch('/api/users', {
@@ -142,7 +174,7 @@ export default function UserManagement() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">User Management</h1>
-      <RoleBasedAccess allowedRoles={['SUPER_ADMIN']}>
+      <RoleBasedAccess allowedRoles={[Role.SUPER_ADMIN, Role.ADMIN]}>
         <Card>
           <CardHeader>
             <CardTitle>Add New User</CardTitle>
@@ -160,7 +192,7 @@ export default function UserManagement() {
                   <SelectItem value={Role.USER}>User</SelectItem>
                   <SelectItem value={Role.EDITOR}>Editor</SelectItem>
                   <SelectItem value={Role.ADMIN}>Admin</SelectItem>
-                  {session?.user?.role === 'SUPER_ADMIN' && (
+                  {session?.user?.role === Role.SUPER_ADMIN && (
                     <SelectItem value={Role.SUPER_ADMIN}>Super Admin</SelectItem>
                   )}
                 </SelectContent>
@@ -172,6 +204,7 @@ export default function UserManagement() {
           </CardContent>
         </Card>
       </RoleBasedAccess>
+
       <Card>
         <CardHeader>
           <CardTitle>User List</CardTitle>
@@ -219,8 +252,10 @@ export default function UserManagement() {
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
-                  <TableHead>Actions</TableHead>
-                  <TableHead>Delete</TableHead>
+                  <RoleBasedAccess allowedRoles={[Role.SUPER_ADMIN, Role.ADMIN]}>
+                    <TableHead>Actions</TableHead>
+                    <TableHead>Delete</TableHead>
+                  </RoleBasedAccess>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -229,35 +264,35 @@ export default function UserManagement() {
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role}</TableCell>
-                    <TableCell className="space-x-2">
-                      <RoleBasedAccess allowedRoles={['SUPER_ADMIN']}>
-                        <Select
-                          value={user.role}
-                          onValueChange={(value) => handleUpdateUser({ ...user, role: value as Role })}
-                          disabled={session?.user?.id === user.id}
-                        >
-                          <SelectTrigger className="w-40">
-                            <SelectValue placeholder="Change role" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value={Role.USER}>User</SelectItem>
-                            <SelectItem value={Role.EDITOR}>Editor</SelectItem>
-                            <SelectItem value={Role.ADMIN}>Admin</SelectItem>
-                            {session?.user?.role === 'SUPER_ADMIN' && (
-                              <SelectItem value={Role.SUPER_ADMIN}>Super Admin</SelectItem>
-                            )}
-                          </SelectContent>
-                        </Select>
-                      </RoleBasedAccess>
-                    </TableCell>
+                    <RoleBasedAccess allowedRoles={[Role.SUPER_ADMIN, Role.ADMIN]}>
+                      <TableCell className="space-x-2">
+                          <Select
+                            value={user.role}
+                            onValueChange={(value) => handleUpdateUser({ ...user, role: value as Role })}
+                            disabled={session?.user?.id === user.id || user.role === Role.SUPER_ADMIN}
+                          >
+                            <SelectTrigger className="w-40">
+                              <SelectValue placeholder="Change role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value={Role.USER}>User</SelectItem>
+                              <SelectItem value={Role.EDITOR}>Editor</SelectItem>
+                              <SelectItem value={Role.ADMIN}>Admin</SelectItem>
+                              {session?.user?.role === Role.SUPER_ADMIN && (
+                                <SelectItem value={Role.SUPER_ADMIN}>Super Admin</SelectItem>
+                              )}
+                            </SelectContent>
+                          </Select>
+                      </TableCell>
+                    </RoleBasedAccess>
                     <TableCell>
-                      <RoleBasedAccess allowedRoles={['SUPER_ADMIN']}>
+                      <RoleBasedAccess allowedRoles={[Role.ADMIN, Role.SUPER_ADMIN]}>
                         <Button
                           onClick={() => { setShowDeleteModal(true); setUserToDelete(user.id) }}
                           variant="destructive"
-                          disabled={session?.user?.id === user.id}
+                          disabled={user.role === Role.SUPER_ADMIN || session?.user?.id === user.id}
                         >
-                          <Trash2 className="h-4 w-4" color='red' />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </RoleBasedAccess>
                     </TableCell>
@@ -268,24 +303,15 @@ export default function UserManagement() {
           )}
         </CardContent>
       </Card>
-      {showDeleteModal && (
-        <Modal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          title="Confirm Deletion"
-          canCloseOnOutsideClick={true}
-          onConfirm={handleDeleteUser}
-          onCancel={() => setShowDeleteModal(false)}
-        >
-          <p>Are you sure you want to delete this user?</p>
-          <div className="flex justify-end mt-4 space-x-2">
-            <Button onClick={() => setShowDeleteModal(false)} variant="secondary">Cancel</Button>
-            <Button onClick={handleDeleteUser} variant="destructive" disabled={loading}>
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Delete'}
-            </Button>
-          </div>
-        </Modal>
-      )}
+
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteUser}
+        title="Confirm Deletion"
+      >
+        <p>Are you sure you want to delete this user?</p>
+      </Modal>
     </div>
   )
 }

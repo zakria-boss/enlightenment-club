@@ -8,16 +8,26 @@ const prisma = new PrismaClient()
 
 export async function POST(request: Request) {
   const data = await request.json()
+
+  if (!data.email) {
+    return NextResponse.json({ error: "Email is required" }, { status: 400 })
+  }
+
   const user = await prisma.user.findUnique({
     where: { email: data.email },
   })
 
   if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 })
+    return NextResponse.json(
+      {
+        error: "User with this email does not exists!",
+      },
+      { status: 400 }
+    )
   }
 
   const resetToken = crypto.randomBytes(20).toString('hex')
-  const resetTokenExpiry = new Date(Date.now() + 3600000) // 1 hour from now
+  const resetTokenExpiry = new Date(Date.now() + 3600000)
 
   await prisma.user.update({
     where: { id: user.id },
@@ -29,11 +39,21 @@ export async function POST(request: Request) {
 
   await sendPasswordResetEmail(user.email, resetToken)
 
-  return NextResponse.json({ message: "Password reset email sent" })
+  return NextResponse.json(
+    {
+      message: "User with this email exists, a password reset link has been sent.",
+    },
+    { status: 200 }
+  )
 }
 
 export async function PUT(request: Request) {
   const data = await request.json()
+
+  if (!data.token || !data.password) {
+    return NextResponse.json({ error: "Token and new password are required" }, { status: 400 })
+  }
+
   const user = await prisma.user.findFirst({
     where: {
       resetToken: data.token,
@@ -42,7 +62,10 @@ export async function PUT(request: Request) {
   })
 
   if (!user) {
-    return NextResponse.json({ error: "Invalid or expired reset token" }, { status: 400 })
+    return NextResponse.json(
+      { error: "Invalid or expired reset token. Please request a new password reset." },
+      { status: 400 }
+    )
   }
 
   const hashedPassword = await bcrypt.hash(data.password, 10)
@@ -56,5 +79,5 @@ export async function PUT(request: Request) {
     },
   })
 
-  return NextResponse.json({ message: "Password reset successfully" })
+  return NextResponse.json({ message: "Password reset successfully" }, { status: 200 })
 }
