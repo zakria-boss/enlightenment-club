@@ -36,8 +36,16 @@ export default function Home() {
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
+    const navHeight = document.querySelector('nav')?.offsetHeight || 0;
+
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
     }
   }
 
@@ -46,12 +54,12 @@ export default function Home() {
       <Navigation activeSection={activeSection} scrollToSection={scrollToSection} />
 
       <main className="flex-grow">
-        <HeroSection  />
+        <HeroSection />
         <MembershipSection />
         <HistoryAndGoalsSection />
         <EventsSection />
         <NewsSection />
-        <BlogSection/>
+        <BlogSection />
         <ContactSection />
         <FAQSection />
       </main>
