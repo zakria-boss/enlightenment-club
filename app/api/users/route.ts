@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient, Role } from '@prisma/client'
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "../auth/[...nextauth]/route"
 import bcrypt from 'bcryptjs'
+import { authOptions } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
@@ -94,9 +94,15 @@ export async function PUT(request: Request) {
         return NextResponse.json({ error: "Only Super Admin can modify themselves" }, { status: 403 })
       }
 
-      return await prisma.user.update({
+      const updatedSuperAdmin = await prisma.user.update({
         where: { id: data.id },
         data: { name: data.name, updatedAt: new Date() },
+      })
+      return NextResponse.json({
+        id: updatedSuperAdmin.id,
+        name: updatedSuperAdmin.name,
+        email: updatedSuperAdmin.email,
+        role: updatedSuperAdmin.role
       })
     }
 
@@ -113,7 +119,12 @@ export async function PUT(request: Request) {
         updatedAt: new Date(),
       },
     })
-    return NextResponse.json({ id: updatedUser.id, name: updatedUser.name, email: updatedUser.email, role: updatedUser.role })
+    return NextResponse.json({
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role
+    })
   } catch (error) {
     console.error('Error updating user:', error)
     return NextResponse.json({ error: 'Failed to update user' }, { status: 500 })

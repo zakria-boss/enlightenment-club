@@ -1,13 +1,5 @@
+import { Blog } from '@prisma/client'
 import { BlogCard } from './BlogCard'
-
-interface Blog {
-  id: string
-  title: string
-  content: string
-  author: string
-  publishedAt: string
-  slug: string
-}
 
 interface BlogListProps {
   blogs: Blog[]
@@ -22,7 +14,7 @@ export function BlogList({ blogs }: BlogListProps) {
           title={blog.title}
           excerpt={blog.content.substring(0, 150) + '...'}
           author={blog.author}
-          date={blog.publishedAt}
+          date={new Date(blog.publishedAt).toISOString()}
           slug={blog.slug}
         />
       ))}

@@ -2,15 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { BlogList } from './BlogList'
-
-interface Blog {
-  id: string;
-  title: string;
-  content: string;
-  author: string;
-  publishedAt: string;
-  slug: string;
-}
+import { Blog } from '@prisma/client'
 
 export default function BlogSection() {
   const [blogs, setBlogs] = useState<Blog[]>([])

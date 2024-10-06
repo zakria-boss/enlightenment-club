@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { useToast } from '@/contexts/ToastProvider'
 import Link from 'next/link'
 
-export default function ResetPassword() {
+function ResetPasswordForm() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -59,48 +59,56 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className=" mx-auto p-4 flex items-center justify-center min-h-screen bg-gray-50">
-      <Card className="w-full max-w-md bg-white shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Reset Password</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {passwordReset ? (
-            <div className="text-center space-y-4">
-              <p className="text-lg">Your password has been reset successfully!</p>
-              <p>You will be redirected to the login page shortly.</p>
-              <Link href="/login" className="text-blue-600 hover:underline">
-                Go to Login
-              </Link>
+    <Card className="w-full max-w-md bg-white shadow-lg">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold text-center">Reset Password</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {passwordReset ? (
+          <div className="text-center space-y-4">
+            <p className="text-lg">Your password has been reset successfully!</p>
+            <p>You will be redirected to the login page shortly.</p>
+            <Link href="/login" className="text-blue-600 hover:underline">
+              Go to Login
+            </Link>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="New password"
+                required
+              />
+              <p className="text-sm text-gray-500 mt-1">Password must be 8+ characters long, with a number and a special character.</p>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="New password"
-                  required
-                />
-                <p className="text-sm text-gray-500 mt-1">Password must be 8+ characters long, with a number and a special character.</p>
-              </div>
-              <div className="relative">
-                <Input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm new password"
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Resetting...' : 'Reset Password'}
-              </Button>
-            </form>
-          )}
-        </CardContent>
-      </Card>
+            <div className="relative">
+              <Input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm new password"
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Resetting...' : 'Reset Password'}
+            </Button>
+          </form>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+export default function ResetPassword() {
+  return (
+    <div className="mx-auto p-4 flex items-center justify-center min-h-screen bg-gray-50">
+      <Suspense fallback={<div>Loading...</div>}>
+        <ResetPasswordForm />
+      </Suspense>
     </div>
   )
 }

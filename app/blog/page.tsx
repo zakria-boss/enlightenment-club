@@ -1,8 +1,6 @@
-"use client"
-
-import { Metadata } from 'next'
 import { BlogList } from '@/components/BlogList'
 import { PrismaClient } from '@prisma/client'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Blog | The Enlightenment Club',

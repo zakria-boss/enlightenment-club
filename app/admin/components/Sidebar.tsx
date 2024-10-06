@@ -1,7 +1,7 @@
 'use client'
 
 import { Calendar, FileText, HelpCircle, Home, LogOut, Menu, UserCircle, Users } from 'lucide-react'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -18,7 +18,6 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const { data: session } = useSession()
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen)
