@@ -115,12 +115,11 @@ export default function UserManagement() {
   }
 
   const handleUpdateUser = async (user: User) => {
+    console.log("🚀 ~ handleUpdateUser ~ user:", user)
     if (user.role === Role.SUPER_ADMIN && session?.user?.id !== user.id) {
       addToast('Cannot modify another Super Admin', 'error')
       return
     }
-
-    if (!validateForm()) return
 
     setLoading(true)
     try {

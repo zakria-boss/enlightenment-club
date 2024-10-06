@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "../auth/[...nextauth]/route"
 import bcrypt from 'bcryptjs'
+import { authOptions } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
@@ -21,9 +21,10 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "User not found" }, { status: 404 })
   }
 
-  let updateData: any = {
+  const updateData = {
     name: data.name,
     email: data.email,
+    password: "",
   }
 
   if (data.currentPassword && data.newPassword) {
