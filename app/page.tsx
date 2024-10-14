@@ -11,6 +11,7 @@ import ContactSection from '@/components/ContactSection'
 import FAQSection from '@/components/FAQSection'
 import Footer from '@/components/Footer'
 import BlogSection from '@/components/BlogSection'
+import ESFSection from '@/components/ESFSection'
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('home')
@@ -55,8 +56,9 @@ export default function Home() {
 
       <main className="flex-grow">
         <HeroSection />
-        <MembershipSection />
         <HistoryAndGoalsSection />
+        <ESFSection/>
+        <MembershipSection />
         <EventsSection />
         <NewsSection />
         <BlogSection />

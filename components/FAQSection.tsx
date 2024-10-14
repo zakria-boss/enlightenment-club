@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+'use client'
+
+import React, { useState, useRef } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const faqRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(faqRef, { once: true, amount: 0.5 })
 
   const faqs = [
     {
@@ -31,35 +36,77 @@ export default function FAQSection() {
     setOpenIndex(openIndex === index ? null : index)
   }
 
+  const headingVariants = {
+    hidden: { opacity: 0, y: 20, transition: { duration: 0.5, ease: "easeInOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut"
+      }
+    }
+  }
+
   return (
-    <section id="faq" className="py-20 bg-gray-100">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center text-[#30323B]">Frequently Asked Questions</h2>
+    <section id="faq" className="py-20 bg-gradient-to-b from-[#f8f8f8] to-[#ececec]" ref={faqRef}>
+      <motion.div
+        className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+        initial="hidden"
+        animate={isInView ? 'visible' : 'hidden'}
+        variants={{
+          hidden: { opacity: 0, y: 20, transition: { duration: 0.5, ease: "easeInOut" } },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeInOut" } }
+        }}
+      >
+        <motion.h2
+          variants={headingVariants}
+          className="text-4xl font-bold mb-12 text-center text-[#30323B]"
+        >
+          Frequently Asked Questions
+        </motion.h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <motion.div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+              variants={{
+                hidden: { scale: 0.95, opacity: 0 },
+                visible: { scale: 1, opacity: 1, transition: { duration: 0.4, ease: 'easeInOut' } }
+              }}
+              initial="hidden"
+              animate="visible"
+            >
               <button
-                className="w-full text-left p-4 focus:outline-none"
+                className="w-full text-left p-4 focus:outline-none hover:bg-gray-100 transition-colors duration-300"
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-semibold text-[#30323B]">{faq.question}</h3>
                   {openIndex === index ? (
-                    <ChevronUp className="w-5 h-5 text-[#EEAE13]" />
+                    <ChevronUp className="w-5 h-5 text-primary transition-transform duration-300 transform rotate-180" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-[#EEAE13]" />
+                    <ChevronDown className="w-5 h-5 text-primary transition-transform duration-300" />
                   )}
                 </div>
               </button>
-              {openIndex === index && (
-                <div className="p-4 bg-gray-50">
-                  <p className="text-gray-700">{faq.answer}</p>
-                </div>
-              )}
-            </div>
+              <AnimatePresence>
+                {openIndex === index && (
+                  <motion.div
+                    className="p-4 bg-gray-50"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                  >
+                    <p className="text-gray-700">{faq.answer}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

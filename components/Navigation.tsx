@@ -37,8 +37,8 @@ export default function Navigation({ activeSection = "", scrollToSection = () =>
                 onClick={() => scrollToSection(item.href)}
                 className={`text-sm font-medium flex items-center transition-colors duration-300 ${
                   activeSection === item.href
-                    ? 'text-[#EEAE13]'
-                    : 'text-white hover:text-[#EEAE13] hover:scale-105'
+                    ? 'text-primary'
+                    : 'text-white hover:text-primary hover:scale-105'
                 }`}
               >
                 {item.icon}
@@ -51,7 +51,7 @@ export default function Navigation({ activeSection = "", scrollToSection = () =>
           <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-[#EEAE13] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-transform duration-300"
+              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-transform duration-300"
             >
               <span className="sr-only">Open main menu</span>
               {isMenuOpen ? (
@@ -76,8 +76,8 @@ export default function Navigation({ activeSection = "", scrollToSection = () =>
               }}
               className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center ${
                 activeSection === item.href
-                  ? 'text-[#EEAE13]'
-                  : 'text-white hover:bg-white hover:bg-opacity-10 hover:text-[#EEAE13]'
+                  ? 'text-primary'
+                  : 'text-white hover:bg-white hover:bg-opacity-10 hover:text-primary'
               }`}
             >
               {item.icon}
