@@ -28,9 +28,9 @@ async function main() {
   // Seed Users
   const user1 = await prisma.user.create({
     data: {
-      email: 'john@example.com',
-      name: 'John Doe',
-      password: await bcrypt.hash('password123', 10),
+      email: 'asad.yasin@tec.com',
+      name: 'Asad Yasin',
+      password: await bcrypt.hash('Qwerty2@', 10),
       role: 'ADMIN',
       permissions: {
         connect: [{ id: permission1.id }, { id: permission2.id }],
@@ -40,9 +40,9 @@ async function main() {
 
   const user2 = await prisma.user.create({
     data: {
-      email: 'jane@example.com',
-      name: 'Jane Doe',
-      password: await bcrypt.hash('password123', 10),
+      email: 'abdus.salam@tec.com',
+      name: 'Abdus Salam',
+      password: await bcrypt.hash('Qwerty2@', 10),
       role: 'SUPER_ADMIN',
       permissions: {
         connect: [{ id: permission1.id }],
