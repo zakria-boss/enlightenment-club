@@ -48,7 +48,7 @@ export default function EventsSection() {
                   <span>{event.location}</span>
                 </div>
                 <motion.button
-                  className="w-full bg-[#EEAE13] text-[#30323B] font-bold py-2 px-4 rounded-md shadow-md hover:bg-opacity-90 transition-all duration-300"
+                  className="w-full bg-[#EEAE13] text-[white] font-bold py-2 px-4 rounded-md shadow-md hover:bg-opacity-90 transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

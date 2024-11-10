@@ -101,7 +101,7 @@ export default function Cabinet() {
   };
 
   return (
-    <div className="mb-12 px-8 sm:px-16" ref={ref}>
+    <div className="mb-12 pb-12 px-8 sm:px-16 overflow-hidden" ref={ref}>
       <motion.h3
         className="text-3xl font-bold mb-8 text-center text-[#30323B] font-serif"
         initial={{ opacity: 0, y: 20 }}
@@ -123,7 +123,7 @@ export default function Cabinet() {
           {cabinetMembers.map((member, index) => (
             <motion.div
               key={index}
-              className="px-4"
+              className="px-4 mb-7 mt-7"
               variants={cardVariants}
             >
               <div className="bg-gradient-to-br from-white to-[#F5F5F5] rounded-lg shadow-xl overflow-hidden h-[500px] flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105">

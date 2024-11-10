@@ -15,25 +15,22 @@ export default function MemberSeries() {
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0 }}
       transition={{ duration: 0.6, ease: 'easeInOut' }}
     >
-      <h3 className="text-3xl font-semibold mb-4 text-[#30323B]">Member Series</h3>
+      <h3 className="text-3xl font-semibold mb-4 text-[#30323B]">Join as an Affiliate</h3>
       <p className="text-lg mb-4 text-gray-700">
-        Our Member Series is a comprehensive course designed to introduce you to the core principles and objectives of The Enlightenment Club.
+        Our Affiliate Program offers individuals and organizations the opportunity to collaborate with The Enlightenment Club and benefit from its resources.
       </p>
       <ul className="list-disc list-inside space-y-2 text-lg text-gray-700 mb-4">
-        <li>Foundations of Islamic intellectual tradition</li>
-        <li>Critical thinking and logical reasoning</li>
-        <li>Contemporary challenges facing the Muslim Ummah</li>
-        <li>The role of political engagement in Islamic thought</li>
+        <li>Access to exclusive events and discussions</li>
+        <li>Opportunities to network with like-minded individuals</li>
+        <li>Support in organizing educational initiatives</li>
+        <li>Collaboration on intellectual projects</li>
       </ul>
-      <p className="text-lg text-gray-700 mb-4">
-        The course is conducted online and consists of weekly lectures, reading assignments, and discussion sessions. It typically takes 8 weeks to complete.
-      </p>
       <motion.button
         className="bg-primary text-white font-bold py-3 px-6 rounded-full shadow-md hover:bg-opacity-90 transition duration-300"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Enroll in Member Series
+        Become an Affiliate
       </motion.button>
     </motion.div>
   )

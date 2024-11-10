@@ -1,23 +1,31 @@
-import React from 'react'
-import Goals from './Goals'
-import Cabinet from './Cabinet'
-import RulesAndRegulations from './RulesAndRegulations'
-import JourneyGallery from './Journey'
+import SectionWrapper from '../SectionWrapper';
+import Cabinet from './Cabinet';
+import Goals from './Goals';
+import JourneyGallery from './Journey';
 
-export default function HistoryAndGoalsSection() {
+export default function HistoryAndGoalsSection(): JSX.Element {
   return (
-    <section
-      id="history-and-goals"
-      className="pt-10 pb-1 bg-gradient-to-r from-[#fdfcfb] via-[#f8f8f8] to-[#ece9e6] shadow-xl"
-      // style={{ backgroundImage: 'url("/images/slider/slide4.webp")', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
+    <>
+      <SectionWrapper id="journey-gallery" className="bg-[#F5E6D3]" childClass='px-2'>
         <JourneyGallery />
+      </SectionWrapper>
+
+      <SectionWrapper
+        id="history-and-goals"
+        className=" pt-3 bg-gradient-to-r from-gray-50 to-gray-100"
+      >
         <Goals />
+
+        {/* <RulesAndRegulations /> */}
+      </SectionWrapper>
+
+      <SectionWrapper
+        id="history-and-goals"
+        className="bg-gradient-to-r from-[#fdfcfb] via-[#f8f8f8] to-[#ece9e6]"
+      >
         <Cabinet />
-        <RulesAndRegulations />
-      </div>
-    </section>
-  )
+        {/* <RulesAndRegulations /> */}
+      </SectionWrapper>
+    </>
+  );
 }
