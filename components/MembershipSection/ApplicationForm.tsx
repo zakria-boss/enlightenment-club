@@ -11,7 +11,7 @@ export default function ApplicationForm() {
   const ref = React.useRef(null)
   const inView = useInView(ref, { once: true, amount: 0.4 })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault()
     console.log('Application submitted:', { name, email, reason })
     setName('')
@@ -27,7 +27,7 @@ export default function ApplicationForm() {
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0 }}
       transition={{ duration: 0.6, ease: 'easeInOut' }}
     >
-      <h3 className="text-3xl font-semibold mb-6 text-[#30323B]">Apply for Membership</h3>
+      <h3 className="text-3xl font-semibold mb-6 text-[#30323B]">Join the Club</h3>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="name" className="block text-lg font-medium text-gray-700 mb-2">Full Name</label>

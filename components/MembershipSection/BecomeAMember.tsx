@@ -15,7 +15,7 @@ export default function BecomeAMember() {
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0 }}
       transition={{ duration: 0.6, ease: 'easeInOut' }}
     >
-      <h3 className="text-3xl font-semibold mb-4 text-[#30323B]">Become a Member</h3>
+      <h3 className="text-3xl font-semibold mb-4 text-[#30323B]">Membership Criteria</h3>
       <p className="text-lg mb-4 text-gray-700">
         Joining The Enlightenment Club is a journey of intellectual growth and community engagement. Our membership process consists of two main steps:
       </p>

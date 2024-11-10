@@ -97,7 +97,7 @@ export default function NewsSection() {
                   <span>{article.date}</span>
                 </div>
                 <Link
-                  href={`/blog/${article.slug}`}
+                  href={`#news`}
                   className="inline-block text-[#EEAE13] font-semibold hover:underline"
                 >
                   Read More

@@ -61,8 +61,8 @@ export default function Home() {
         <MembershipSection />
         <EventsSection />
         <NewsSection />
-        <BlogSection />
-        <ContactSection />
+        {/* <BlogSection /> */}
+        {/* <ContactSection /> */}
         <FAQSection />
       </main>
 
