@@ -8,30 +8,31 @@ import { useInView } from 'react-intersection-observer'
 
 const journeyData = [
   {
-    title: "The Beginning",
+    title: "Foundation of TEC",
     description:
-      "The Enlightenment Club was founded in 2015 by a group of passionate Muslim intellectuals who aimed to promote critical thinking and intellectual discourse within the Islamic community.",
-    image: "/images/slider/slide1.jpeg",
+      "TEC was officially established on November 4, 2022, with a vision to create a platform for intellectual growth, meaningful dialogue, and impactful community engagement. The journey began with our inaugural session on November 27, 2022, which set the tone for our mission to empower individuals with knowledge and leadership skills.",
+    image: "/images/slider/Epistemology 1.jpeg",
   },
   {
-    title: "Expanding Horizons",
+    title: "Membership Course Success",
     description:
-      "In 2018, TEC expanded its reach with the launch of its first international conference, gathering scholars from various disciplines to discuss contemporary issues in Islamic thought.",
-    image: "/images/slider/slide3.webp",
+      "Over the span of one year, TEC conducted two comprehensive series of its Membership Course. These series were designed to educate, mentor, and build a strong network of passionate individuals dedicated to our mission. The success of these programs has become a cornerstone of TEC’s legacy, fostering a sense of community and commitment among members.",
+    image: "/images/slider/success.jpeg",
   },
   {
-    title: "Global Impact",
+    title: "First Annual Convention",
     description:
-      "In 2021, TEC reached new heights with its online platform and global membership, impacting communities worldwide through virtual seminars, workshops, and collaborative research projects.",
-    image: "/images/slider/slide4.webp",
+      "On February 13, 2024, TEC held its first annual convention, a milestone event that brought together influential speakers, thought leaders, and members from various fields. This convention not only celebrated our achievements but also set the stage for bigger aspirations by fostering collaboration and inspiring attendees to contribute to our shared vision.",
+    image: "/images/slider/annual.jpeg",
   },
   {
-    title: "Future Vision",
+    title: "Introduction of New Initiatives",
     description:
-      "Looking to the future, TEC plans to broaden its reach and impact through further initiatives and educational programs, aiming to foster a new generation of Muslim thinkers and leaders.",
-    image: "/images/slider/slide2.webp",
-  },
-]
+      "Following our annual convention, TEC introduced several new activities to expand engagement and impact. Monthly events became a regular feature, offering insightful discussions on diverse topics. Our media presence also grew significantly, with the introduction of podcasts, social media campaigns, and event recordings that reached a wider audience.",
+    image: "/images/slider/initiative.jpeg",
+  }
+];
+
 
 interface ArrowProps {
   onClick: () => void
