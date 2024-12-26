@@ -2,14 +2,13 @@
 
 import { motion, useAnimation } from 'framer-motion'
 import { Calendar, User } from 'lucide-react'
-import Link from 'next/link'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 export default function NewsSection() {
   const controls = useAnimation()
   const { ref: newsRef, inView } = useInView({
-    threshold: 0.5,
+    threshold: 0.4,
     triggerOnce: true,
   })
 
@@ -19,89 +18,92 @@ export default function NewsSection() {
     }
   }, [controls, inView])
 
-  const recentArticles = [
+  const recentActivities = [
     {
-      title: "The Role of Islamic Intellectualism in Today's World",
-      excerpt: "Exploring the importance of Islamic thought and scholarship in addressing contemporary challenges.",
-      author: "Dr. Amina Khan",
-      date: "June 1, 2023",
-      image: "/images/placeholder.svg",
-      slug: "islamic-intellectualism-today"
+      title: "Podcast: Syria Issue",
+      description: "Historical Background and Current Reality: A comprehensive analysis of the Syrian conflict, examining its historical origins and the current geopolitical situation.",
+      venue: "Lahore",
+      host: "Dawood Ahmad",
+      guest: "Muhammad Asad Ashraf",
+      url: "https://www.youtube.com/embed/DUg1w2SikgQ",
     },
     {
-      title: "How Political Engagement Can Strengthen the Ummah",
-      excerpt: "Examining the ways in which political participation can empower Muslim communities globally.",
-      author: "Prof. Yusuf Ali",
-      date: "May 25, 2023",
-      image: "/images/placeholder.svg",
-      slug: "political-engagement-ummah"
+      title: "Global Crisis and its Solution",
+      description: "An insightful session exploring the interconnected global crises and proposing actionable solutions from a global perspective.",
+      venue: "Lahore",
+      speaker: "Muhammad Asad Yaseen",
+      url: "https://www.youtube.com/embed/xCrxRpG-jLc",
     },
     {
-      title: "The Intersection of Science and Islamic Ethics",
-      excerpt: "Investigating the harmonious relationship between scientific progress and Islamic moral principles.",
-      author: "Dr. Fatima Ahmed",
-      date: "May 18, 2023",
-      image: "/images/placeholder.svg",
-      slug: "science-islamic-ethics"
+      title: "Energy Crisis in Pakistan and its Solution",
+      description: "A detailed discussion on Pakistan's ongoing energy crisis, its root causes, and potential solutions for a sustainable future.",
+      venue: "Lahore",
+      speaker: "Abdus Salam",
+      url: "https://www.youtube.com/embed/nNYNriO-Vg0",
     }
   ]
 
   return (
-    <section id="news" className="py-20 bg-gradient-to-r from-[#fdfcfb] via-[#f8f8f8] to-[#ece9e6]" ref={newsRef}>
+    <section id="news" className="py-20 bg-gradient-to-r from-white to-gray-100" ref={newsRef}>
       <motion.div
         className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"
         variants={{
           hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeInOut' } }
+          visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeInOut' } }
         }}
         initial="hidden"
         animate={controls}
       >
-        <h2 className="text-4xl sm:text-5xl font-bold mb-12 text-center text-[#30323B]">Our Latest Thoughts</h2>
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-          {recentArticles.map((article, index) => (
+        <h2 className="text-4xl sm:text-5xl font-bold mb-12 text-center text-[#30323B]">Recent Activities</h2>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {recentActivities.map((activity, index) => (
             <motion.div
               key={index}
-              className="bg-white text-[#30323B] rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 overflow-hidden" // Adding scale on hover
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeInOut', delay: index * 0.1 } }
-              }}
-              initial="hidden"
-              animate="visible"
-              whileHover={{ scale: 1.05 }}
+              className="bg-white text-[#30323B] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
             >
-              <div className="relative overflow-hidden group">
-                <motion.img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105" // Image zoom effect
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: { opacity: 1, transition: { duration: 0.6, ease: 'easeInOut', delay: index * 0.2 } }
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                />
+              <div className="relative overflow-hidden">
+                <motion.iframe
+                  src={activity.url}
+                  title={activity.title}
+                  className="w-full h-56 border-b-4 border-gray-200"
+                  allowFullScreen
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: index * 0.3 }}
+                ></motion.iframe>
               </div>
               <div className="p-6">
-                <h3 className="text-2xl font-bold mb-3 hover:text-[#EEAE13] transition-colors duration-300">
-                  {article.title}
+                <h3 className="text-xl font-semibold mb-3 hover:text-[#EEAE13] transition-colors duration-300">
+                  {activity.title}
                 </h3>
-                <p className="text-gray-700 mb-6">{article.excerpt}</p>
-                <div className="flex items-center text-sm text-gray-500 mb-2">
-                  <User className="w-5 h-5 mr-2 text-[#EEAE13]" />
-                  <span>{article.author}</span>
+                <p className="text-gray-600 mb-4">{activity.description}</p>
+                <div className="text-sm text-gray-500 space-y-1">
+                  <div>
+                    <span className="text-[#EEAE13] font-semibold">Venue:</span> {activity.venue}
+                  </div>
+                  {activity.speaker && (
+                    <div className="flex items-center">
+                      <User className="w-4 h-4 mr-1 text-[#EEAE13]" />
+                      <span>{activity.speaker}</span>
+                    </div>
+                  )}
+                  {activity.host && (
+                    <div className="flex items-center">
+                      <User className="w-4 h-4 mr-1 text-[#EEAE13]" />
+                      <span>Host: {activity.host}</span>
+                    </div>
+                  )}
+                  {activity.guest && (
+                    <div className="flex items-center">
+                      <User className="w-4 h-4 mr-1 text-[#EEAE13]" />
+                      <span>Guest: {activity.guest}</span>
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-center text-sm text-gray-500 mb-4">
-                  <Calendar className="w-5 h-5 mr-2 text-[#EEAE13]" />
-                  <span>{article.date}</span>
-                </div>
-                <Link
-                  href={`#news`}
-                  className="inline-block text-[#EEAE13] font-semibold hover:underline"
-                >
-                  Read More
-                </Link>
               </div>
             </motion.div>
           ))}

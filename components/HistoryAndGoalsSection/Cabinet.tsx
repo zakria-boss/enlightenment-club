@@ -14,43 +14,49 @@ const cabinetMembers = [
   {
     name: "Abdus Salam",
     role: "President",
-    bio: "Abdus Salam leads The Enlightenment Club (TEC), driving strategic initiatives and ensuring intellectual growth within the organization.",
+    bio: "The President oversees TEC’s operations, appoints the Central Cabinet, approves memberships, and supervises events. He ensures adherence to TEC’s objectives, resolves issues, and maintains the organization’s structure.",
     image: "/images/placeholder.svg"
   },
   {
-    name: "Asad Yasin",
-    role: "Chairman General Counsel",
-    bio: "Asad Yasin advises on legal matters and ensures compliance with The Enlightenment Club's (TEC) governing policies and regulations.",
+    name: "Muhammad Asad Yaseen",
+    role: "Vice President & Chairman Council of Members",
+    bio: "As Vice President and CCM, Muhammad Asad Yaseen supports TEC’s growth and intellectual development. He organizes Member Series, directs Affiliate Member sessions, and ensures expansion through regular reporting.",
     image: "/images/placeholder.svg"
   },
   {
-    name: "Asad Ashraf",
-    role: "Chairman ESF",
-    bio: "Asad Ashraf manages the Enlightenment Student Federation (ESF), providing guidance on academic resources and financial support for students.",
+    name: "Muhammad Asad Ashraf",
+    role: "President Enlightenment Student Federation (ESF)",
+    bio: "Muhammad Asad Ashraf leads ESF, managing TEC’s operations in educational institutes. He appoints institutional leaders, oversees memberships, and ensures discipline within the student wing.",
     image: "/images/placeholder.svg"
   },
   {
-    name: "Ali",
-    role: "President ESF PU",
-    bio: "Ali leads the Enlightenment Student Federation (ESF) chapter at Punjab University, overseeing operations and educational initiatives at the campus level.",
+    name: "Muhammad Ali Raza",
+    role: "President ESF-PU",
+    bio: "Muhammad Ali Raza heads TEC’s activities at the University of the Punjab. He engages students, organizes campus events, and strengthens TEC’s presence in the university.",
+    image: "/images/placeholder.svg"
+  },
+  {
+    name: "Talha Afzal",
+    role: "Event Manager",
+    bio: "Talha Afzal manages TEC’s events, handling planning, logistics, and execution. He ensures that all events align with TEC’s objectives.",
+    image: "/images/placeholder.svg"
+  },
+  {
+    name: "Dawood Ahmad",
+    role: "Media Advisor",
+    bio: "Dawood Ahmad oversees TEC’s media strategy, promoting its objectives through social media and digital platforms. He ensures an active and engaging online presence.",
+    image: "/images/placeholder.svg"
+  },
+  {
+    name: "Rafi Ullah",
+    role: "Media Manager",
+    bio: "Rafi Ullah supports the Media Advisor by managing social media, editing videos, and publishing content like podcasts and event recordings.",
     image: "/images/placeholder.svg"
   },
   {
     name: "Mehran Tariq",
-    role: "Treasurer",
-    bio: "Mehran Tariq manages The Enlightenment Club's (TEC) finances, including budgeting, accounting, and financial planning.",
-    image: "/images/placeholder.svg"
-  },
-  {
-    name: "Talha",
-    role: "Events Coordinator",
-    bio: "Talha is responsible for organizing and executing The Enlightenment Club's (TEC) events, workshops, and seminars.",
-    image: "/images/placeholder.svg"
-  },
-  {
-    name: "Dawood",
-    role: "Media Manager",
-    bio: "Dawood manages The Enlightenment Club's (TEC) online presence, including social media content, branding, and promotional materials.",
+    role: "Finance Advisor",
+    bio: "Mehran Tariq manages TEC’s finances, overseeing funds, maintaining records, and ensuring transparency in financial matters.",
     image: "/images/placeholder.svg"
   }
 ];

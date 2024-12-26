@@ -13,39 +13,25 @@ const esfWings = [
     id: 1,
     wingName: "ESF-PU",
     university: "Punjab University",
-    president: "Ali Raza",
-    description: "The Punjab University wing of the Enlightenment Student Federation fosters a community of thinkers and learners, encouraging students to engage with intellectual discourse and promote rational thinking.",
-    imageUrl: "https://via.placeholder.com/200x200"
-  },
-  {
-    id: 2,
-    wingName: "ESF-GCU",
-    university: "Government College University",
-    president: "Ayesha Siddiqui",
-    description: "The ESF-GCU wing is a dynamic group of students from Government College University who work together to explore philosophical and spiritual themes within an academic setting.",
-    imageUrl: "https://via.placeholder.com/200x200"
-  },
-  {
-    id: 3,
-    wingName: "ESF-FAST",
-    university: "FAST University",
-    president: "Bilal Khan",
-    description: "At FAST University, the Enlightenment Student Federation chapter focuses on innovation and leadership, inspiring students to approach their academic and personal development with a critical mindset.",
-    imageUrl: "https://via.placeholder.com/200x200"
+    president: "Muhammad Ali Raza",
+    description:
+      "The Punjab University wing of the Enlightenment Student Federation fosters a community of thinkers and learners, encouraging students to engage with intellectual discourse and promote rational thinking.",
+    imageUrl: "/images/placeholder.svg"
   }
 ]
 
 const esfHead = {
-  name: "Asad Ashraf",
-  title: "Head of Enlightenment Student Federation",
-  description: "Asad Ashraf oversees all the student federation wings across various universities. He works closely with each wing's president to ensure the mission of the Enlightenment Club is upheld and promoted.",
-  imageUrl: "https://via.placeholder.com/200x200"
+  name: "Muhammad Asad Ashraf",
+  title: "President Enlightenment Student Federation",
+  description:
+    "Muhammad Asad Ashraf leads ESF, managing TEC’s operations in educational institutes. He appoints institutional leaders, oversees memberships, and ensures discipline within the student wing.",
+  imageUrl: "/images/placeholder.svg"
 }
 
 export default function ESFSection() {
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: 0.1
+    threshold: 0.4
   })
 
   return (
@@ -57,12 +43,12 @@ export default function ESFSection() {
 
         <div className="max-w-4xl mx-auto text-center mb-16">
           <p className="text-lg text-gray-700 leading-relaxed">
-            The Enlightenment Student Federation (ESF) is a vibrant and dynamic student body that
-            spans across various universities. ESF's mission is to foster intellectual growth,
-            leadership, and community engagement among students through critical thinking and
-            meaningful dialogue. Each university wing of ESF operates under the guidance of a
-            President and works towards empowering students to question, explore, and grow both
-            academically and spiritually.
+            The Enlightenment Student Federation (ESF) is the student wing of The Enlightenment Club (TEC),
+            dedicated to inspiring critical thinking and promoting Islamic values among students. Through sessions,
+            ESF equips students to counter anti-Islamic narratives and engage in meaningful intellectual activities.
+          </p>
+          <p className="text-lg text-gray-700 leading-relaxed mt-4">
+            Join ESF and be part of a movement shaping future leaders with purpose and vision!
           </p>
         </div>
 
