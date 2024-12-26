@@ -16,11 +16,11 @@ export default function MembershipSection() {
   }
 
   const criteria = [
-    "Complete the Member Series program",
-    "Participate in community discussions",
-    "Attend orientation sessions",
-    "Maintain active participation",
-    "Uphold club values and ethics"
+    "Enroll in Membership Course",
+    "Complete Membership Course successfully",
+    "Support TEC’s mission and goals",
+    "Attend TEC events and sessions",
+    "Adhere to TEC rules and conduct"
   ]
 
   return (
