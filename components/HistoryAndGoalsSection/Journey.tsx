@@ -148,6 +148,7 @@ const JourneyGallery: React.FC = () => {
 
   return (
     <section
+      id="about"
       ref={ref}
       className="relative w-full h-[70%] mb-10 bg-[#F5E6D3] px-4 sm:px-0"
     >

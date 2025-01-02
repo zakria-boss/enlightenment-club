@@ -68,21 +68,19 @@ export default function Navigation({ activeSection = "", scrollToSection = () =>
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white bg-opacity-10 backdrop-blur-md">
           {navItems.map((item) => (
-            <button
+            <a
               key={item.name}
-              onClick={() => {
-                scrollToSection(item.href)
-                setIsMenuOpen(false)
-              }}
-              className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center ${
-                activeSection === item.href
+              href={item.href}
+              onClick={() => setIsMenuOpen(false)}
+              className={`w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center ${
+                activeSection === item.href.slice(1)
                   ? 'text-primary'
                   : 'text-white hover:bg-white hover:bg-opacity-10 hover:text-primary'
               }`}
             >
               {item.icon}
               {item.name}
-            </button>
+            </a>
           ))}
         </div>
       </div>
