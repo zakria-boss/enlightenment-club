@@ -13,7 +13,7 @@ export default function AboutSection() {
   }
 
   return (
-    <section id="about" className="py-20 bg-white">
+    <section className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-[#30323B]">Our Journey and Purpose</h2>
         <p className="text-xl mb-12 text-center">

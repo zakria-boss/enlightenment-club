@@ -46,22 +46,22 @@ export default function Footer({ scrollToSection = () => {} }: FooterProps) {
   const socialPlatforms = [
     {
       name: 'YouTube',
-      url: 'https://youtube.com/theenlightenmentclub',
+      url: 'https://www.youtube.com/@TheEnlightenmentClub',
       icon: <Youtube />,
     },
     {
       name: 'Twitter',
-      url: 'https://twitter.com/theenlightenmentclub',
+      url: 'https://twitter.com/tec_org',
       icon: <Twitter />,
     },
     {
       name: 'Instagram',
-      url: 'https://instagram.com/theenlightenmentclub',
+      url: 'https://www.instagram.com/tec_org/',
       icon: <Instagram />,
     },
     {
       name: 'Facebook',
-      url: 'https://facebook.com/theenlightenmentclub',
+      url: 'https://www.facebook.com/theenlightenmentclub/',
       icon: <Facebook />,
     },
     {

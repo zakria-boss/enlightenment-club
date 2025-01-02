@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useAnimation } from 'framer-motion'
-import { Calendar, User } from 'lucide-react'
+import { MapPin, User } from 'lucide-react'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 
@@ -65,44 +65,53 @@ export default function NewsSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
             >
-              <div className="relative overflow-hidden">
+              <div className="relative w-full h-56 flex-shrink-0">
                 <motion.iframe
                   src={activity.url}
                   title={activity.title}
-                  className="w-full h-56 border-b-4 border-gray-200"
+                  className="w-full h-full border-none"
                   allowFullScreen
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: index * 0.3 }}
                 ></motion.iframe>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-3 hover:text-[#EEAE13] transition-colors duration-300">
+              <div className="p-5 flex flex-col flex-grow">
+                <h3 className="text-2xl font-semibold mb-1 h-16 line-clamp-2 text-[#30323B] hover:text-[#EEAE13] transition-colors duration-300">
                   {activity.title}
                 </h3>
-                <p className="text-gray-600 mb-4">{activity.description}</p>
-                <div className="text-sm text-gray-500 space-y-1">
-                  <div>
-                    <span className="text-[#EEAE13] font-semibold">Venue:</span> {activity.venue}
+
+                <div className="mb-5 h-24">
+                  <p className="text-gray-600 line-clamp-4">
+                    {activity.description}
+                  </p>
+                </div>
+
+                <div className="mt-auto space-y-3">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[#EEAE13] flex-shrink-0" />
+                    <span className="text-gray-600">{activity.venue}</span>
                   </div>
-                  {activity.speaker && (
-                    <div className="flex items-center">
-                      <User className="w-4 h-4 mr-1 text-[#EEAE13]" />
-                      <span>{activity.speaker}</span>
-                    </div>
-                  )}
-                  {activity.host && (
-                    <div className="flex items-center">
-                      <User className="w-4 h-4 mr-1 text-[#EEAE13]" />
-                      <span>Host: {activity.host}</span>
-                    </div>
-                  )}
-                  {activity.guest && (
-                    <div className="flex items-center">
-                      <User className="w-4 h-4 mr-1 text-[#EEAE13]" />
-                      <span>Guest: {activity.guest}</span>
-                    </div>
-                  )}
+                  <div className="space-y-2">
+                    {activity.speaker && (
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4 text-[#EEAE13] flex-shrink-0" />
+                        <span className="text-gray-600 line-clamp-1">{activity.speaker}</span>
+                      </div>
+                    )}
+                    {activity.host && (
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4 text-[#EEAE13] flex-shrink-0" />
+                        <span className="text-gray-600 line-clamp-1">Host: {activity.host}</span>
+                      </div>
+                    )}
+                    {activity.guest && (
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4 text-[#EEAE13] flex-shrink-0" />
+                        <span className="text-gray-600 line-clamp-1">Guest: {activity.guest}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.div>
