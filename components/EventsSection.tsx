@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { EventRegistrationModal } from './EventRegistrationModal'
 
 export default function EventsSection() {
   const ref = useRef(null)
@@ -9,6 +10,8 @@ export default function EventsSection() {
     once: true,
     amount: 0.4,
   })
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <section id="events" className="py-20 bg-gradient-to-b from-white to-gray-100">
@@ -39,40 +42,47 @@ export default function EventsSection() {
                   <div className="flex items-start">
                     <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Date:</span>
                     <span className="text-[#30323B]">{activity.date}</span>
-                </div>
+                  </div>
 
                   <div className="flex items-start">
                     <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Time:</span>
                     <span className="text-[#30323B]">{activity.time}</span>
-                </div>
+                  </div>
 
                   <div className="flex items-start">
                     <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Venue:</span>
                     <span className="text-[#30323B]">{activity.venue}</span>
                   </div>
 
-                {activity.speaker && (
+                  {activity.speaker && (
                     <div className="flex items-start">
                       <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Speaker:</span>
                       <span className="text-[#30323B]">{activity.speaker}</span>
-                  </div>
-                )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-6">
-                <motion.button
+                  <motion.button
                     className="w-full bg-[#EEAE13] text-white font-bold py-3 px-4 rounded-md shadow-md hover:bg-opacity-90 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Register
-                </motion.button>
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    Register
+                  </motion.button>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      <EventRegistrationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        events={upcomingActivities}
+      />
     </section>
   )
 }
