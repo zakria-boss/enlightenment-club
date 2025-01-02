@@ -24,34 +24,50 @@ export default function EventsSection() {
               transition={{ duration: 0.5, delay: index * 0.2 }}
               whileHover={{ scale: 1.05 }}
             >
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{activity.title}</h3>
-                <p className="text-gray-600 mb-4">{activity.description}</p>
-                <div className="flex items-center mb-2">
-                  <span className="text-[#EEAE13] mr-2">Date:</span>
-                  <span>{activity.date}</span>
+              <div className="p-6 flex flex-col h-full">
+                <h3 className="text-2xl font-semibold text-[#30323B] mb-3 h-14 line-clamp-2">
+                  {activity.title}
+                </h3>
+
+                <div className="mb-6 h-24">
+                  <p className="text-gray-600 line-clamp-4">
+                    {activity.description}
+                  </p>
                 </div>
-                <div className="flex items-center mb-2">
-                  <span className="text-[#EEAE13] mr-2">Time:</span>
-                  <span>{activity.time}</span>
+
+                <div className="flex-grow space-y-3">
+                  <div className="flex items-start">
+                    <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Date:</span>
+                    <span className="text-[#30323B]">{activity.date}</span>
                 </div>
-                <div className="flex items-center mb-2">
-                  <span className="text-[#EEAE13] mr-2">Venue:</span>
-                  <span>{activity.venue}</span>
+
+                  <div className="flex items-start">
+                    <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Time:</span>
+                    <span className="text-[#30323B]">{activity.time}</span>
                 </div>
+
+                  <div className="flex items-start">
+                    <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Venue:</span>
+                    <span className="text-[#30323B]">{activity.venue}</span>
+                  </div>
+
                 {activity.speaker && (
-                  <div className="flex items-center mb-4">
-                    <span className="text-[#EEAE13] mr-2">Speaker:</span>
-                    <span>{activity.speaker}</span>
+                    <div className="flex items-start">
+                      <span className="text-[#EEAE13] font-medium w-20 flex-shrink-0">Speaker:</span>
+                      <span className="text-[#30323B]">{activity.speaker}</span>
                   </div>
                 )}
+                </div>
+
+                <div className="mt-6">
                 <motion.button
-                  className="w-full bg-[#EEAE13] text-[white] font-bold py-2 px-4 rounded-md shadow-md hover:bg-opacity-90 transition-all duration-300"
+                    className="w-full bg-[#EEAE13] text-white font-bold py-3 px-4 rounded-md shadow-md hover:bg-opacity-90 transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Register
                 </motion.button>
+                </div>
               </div>
             </motion.div>
           ))}

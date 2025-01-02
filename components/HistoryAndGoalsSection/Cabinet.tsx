@@ -133,7 +133,7 @@ export default function Cabinet() {
               variants={cardVariants}
             >
               <div className="bg-gradient-to-br from-white to-[#F5F5F5] rounded-lg shadow-xl overflow-hidden h-[500px] flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                <div className="h-52 overflow-hidden rounded-t-lg">
+                <div className="h-52 w-full overflow-hidden rounded-t-lg flex-shrink-0">
                   <motion.img
                     src={member.image}
                     alt={member.name}
@@ -142,10 +142,15 @@ export default function Cabinet() {
                     whileHover="hover"
                   />
                 </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <h4 className="text-2xl font-semibold mb-2 text-[#30323B] font-serif">{member.name}</h4>
-                  <p className="text-primary mb-4 font-medium">{member.role}</p>
-                  <p className="text-gray-600 text-sm flex-grow overflow-y-auto">{member.bio}</p>
+                <div className="p-5 flex flex-col flex-grow">
+                  <div className="flex-shrink-0 mb-2">
+                    <h4 className="text-2xl font-semibold text-[#30323B] font-serif h-14 line-clamp-2 mb-2">{member.name}</h4>
+                    <p className="text-primary font-medium h-6 line-clamp-1">{member.role}</p>
+                  </div>
+                  <div className="relative flex-grow overflow-hidden">
+                    <p className="text-gray-600 text-sm line-clamp-6">{member.bio}</p>
+                    <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#F5F5F5] to-transparent"></div>
+                  </div>
                 </div>
               </div>
             </motion.div>
