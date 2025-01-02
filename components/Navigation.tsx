@@ -30,7 +30,7 @@ export default function Navigation({ activeSection = "", scrollToSection = () =>
               <Logo className="h-[5rem] w-auto" />
             </button>
           </div>
-          <div className="hidden md:flex md:space-x-8">
+          <div className="hidden lg:flex lg:space-x-6">
             {navItems.map((item) => (
               <button
                 key={item.name}
@@ -48,7 +48,7 @@ export default function Navigation({ activeSection = "", scrollToSection = () =>
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-transform duration-300"
@@ -68,19 +68,21 @@ export default function Navigation({ activeSection = "", scrollToSection = () =>
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white bg-opacity-10 backdrop-blur-md">
           {navItems.map((item) => (
-            <a
+            <button
               key={item.name}
-              href={item.href}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                scrollToSection(item.href);
+                setIsMenuOpen(false);
+              }}
               className={`w-full text-left px-3 py-2 rounded-md text-base font-medium flex items-center ${
-                activeSection === item.href.slice(1)
+                activeSection === item.href
                   ? 'text-primary'
                   : 'text-white hover:bg-white hover:bg-opacity-10 hover:text-primary'
               }`}
             >
               {item.icon}
               {item.name}
-            </a>
+            </button>
           ))}
         </div>
       </div>
